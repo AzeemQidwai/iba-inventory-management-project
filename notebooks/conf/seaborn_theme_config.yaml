@@ -1,0 +1,27 @@
+theme:
+  style: whitegrid       # Options: whitegrid, darkgrid, white, dark, ticks
+  context: notebook      # Options: paper, notebook, talk, poster
+  palette: deep          # Options: deep, muted, bright, pastel, dark, colorblind
+  rc:                    # Matplotlib rc parameters
+    axes.titlesize: 16
+    axes.labelsize: 14
+    xtick.labelsize: 12
+    ytick.labelsize: 12
+    legend.fontsize: 12
+    figure.figsize: [15, 6]  # Default figure size
+    font.size: 12            # General font size
+    grid.color: "#cccccc"    # Gridline color
+    grid.linestyle: "--"     # Gridline style
+    lines.linewidth: 2       # Default line width
+    lines.markersize: 10      # Default marker size
+    patch.edgecolor: "black" # Color of patch edges
+    patch.force_edgecolor: true  # Force patches to have edge colors
+    savefig.dpi: 300         # Default DPI for saved figures
+    figure.dpi: 100          # DPI for displayed figures
+    figure.autolayout: true  # Auto-layout to avoid overlapping
+    text.color: "black"      # Default text color
+    axes.edgecolor: "black"  # Color of axes edges
+    axes.grid: true          # Enable or disable grid
+    axes.axisbelow: true     # Place gridlines below elements
+    axes.spines.top: false   # Hide the top spine
+    axes.spines.right: false # Hide the right spine
