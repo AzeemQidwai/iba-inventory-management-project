@@ -1,0 +1,36 @@
+artifact_path: model
+flavors:
+  catboost:
+    catboost_version: 1.2.7
+    code: null
+    data: model.cb
+    model_type: CatBoostRegressor
+    save_format: cbm
+  python_function:
+    data: model.cb
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.catboost
+    python_version: 3.12.0
+mlflow_version: 2.19.0
+model_size_bytes: 147130
+model_uuid: 797b2a5908d74100a1251b0f0ade3a3b
+run_id: c4570b886ebe4bffa1623eeeb627ea5c
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "double", "name": "Open Stock", "required": true}, {"type": "double",
+    "name": "Closing Stock", "required": true}, {"type": "integer", "name": "Day",
+    "required": true}, {"type": "integer", "name": "Month", "required": true}, {"type":
+    "integer", "name": "Year", "required": true}, {"type": "string", "name": "Material
+    Code", "required": true}, {"type": "double", "name": "Lag_1_Issued", "required":
+    true}, {"type": "double", "name": "Rolling_7_Issued", "required": true}, {"type":
+    "integer", "name": "Weekday", "required": true}, {"type": "long", "name": "BFP",
+    "required": true}]'
+  outputs: '[{"type": "double", "required": true}]'
+  params: null
+utc_time_created: '2024-12-31 03:39:05.095296'

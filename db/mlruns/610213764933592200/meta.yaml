@@ -1,0 +1,6 @@
+artifact_location: file:///d:/IBA-Project/iba-inventory-management-project/notebooks/mlruns/610213764933592200
+creation_time: 1735617925112
+experiment_id: '610213764933592200'
+last_update_time: 1735617925112
+lifecycle_stage: active
+name: Hyperparameter Tuning with Optuna (RandomForest - Material)
