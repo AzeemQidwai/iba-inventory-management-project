@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forecast Material</title>
+</head>
+<body>
+    <h1>Forecast Material</h1>
+    <button onclick="history.back()">Back</button>
+    <!-- Form for Material Code and Forecast Horizon -->
+    <form method="post">
+        {% csrf_token %}
+        <label for="material_code">Material Code:</label>
+        <input type="text" name="material_code" id="material_code" required>
+        <label for="horizon">Forecasting Horizon (in days):</label>
+        <input type="number" name="horizon" id="horizon" min="1" required>
+        <button type="submit">Forecast</button>
+    </form>
+
+    <!-- Display Forecast Results -->
+    {% if forecast_data %}
+    <h2>Forecast Results for Material Code: {{ material_code }}</h2>
+        <table border="1">
+            <tr>
+                <th>Date (ds)</th>
+                <th>Forecasted Value (TimeGPT)</th>
+                <th>High Estimate (80%)</th>
+                <th>High Estimate (90%)</th>
+                <th>Low Estimate (80%)</th>
+                <th>Low Estimate (90%)</th>
+            </tr>
+            {% for row in forecast_data %}
+            <tr>
+                <td>{{ row.ds|cut:", midnight" }}</td>
+                <td>{{ row.TimeGPT }}</td>
+                <td>{{ row.timegpt_hi_80 }}</td>
+                <td>{{ row.timegpt_hi_90 }}</td>
+                <td>{{ row.timegpt_lo_80 }}</td>
+                <td>{{ row.timegpt_lo_90 }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Forecast Plot:</h2>
+        <img src="data:image/png;base64,{{ forecast_plot }}" alt="Forecast Plot">
+    {% endif %}
+</body>
+</html>

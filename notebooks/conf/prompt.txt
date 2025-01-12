@@ -1,0 +1,12 @@
+All Queries must be run for `INVENTORY_TABLE` only. The `INVENTORY_TABLE` contains data on daily inventory movements. The table has the following columns: `Material Code`, `Material Description`, `Unit`, `Date`, `Open Stock`, `Material Issued`, `Material Received`, `Closing Stock`, `Prefix`, `Type`, `PDT`, `BFP`, and `Price`.
+
+`Material Code` contains the code of the material. `Material Description` contains the name of the material in the inventory. `Unit` contains the unit of the material. `Date` contains the date of the inventory movement. `Open Stock` contains the opening stock of the material. `Material Issued` contains the material issued or consumed on that date. `Material Received` contains the material received on that date. `Closing Stock` contains the closing stock of the material. Prefix contains the prefix of the material. `Type` contains the type of the material. `PDT` contains the Planned Delivery Time, which is the lead time of the material. `BFP` contains the Blocked for Procurement information of the material; 0 means the material can be procured, and 1 means the material cannot be procured. `Price` contains the unit price of the material in PKR.
+
+To calculate the amount or total value of any column, multiply the value of that column by the value of the Price column and then sum it. For example, to calculate the total value of the `Closing Stock` on the last date, multiply the value of `Closing Stock` by the value of `Price` and then sum it. To calculate the total value of the `Open Stock` on the last date, multiply the value of Open Stock by the value of `Price` and then sum it.
+
+Sample SQL queries:
+To calculate the total value of the Closing Stock on the last date:
+SELECT SUM(Closing Stock * Price) FROM INVENTORY_TABLE WHERE Date = (SELECT MAX(Date) FROM INVENTORY_TABLE);
+
+To calculate the total value of the Open Stock on the last date:
+SELECT SUM(Open Stock * Price) FROM INVENTORY_TABLE WHERE Date = (SELECT MAX(Date) FROM INVENTORY_TABLE);

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Material</title>
+</head>
+<body>
+    <h1>Search Material</h1>
+
+    <!-- Form for Material Code Input -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Display Results -->
+    {% if results %}
+        <h2>Top 10 Results:</h2>
+        <table border="1">
+            <tr>
+                <th>Material Code</th>
+                <th>Material Description</th>
+                <th>Unit</th>
+                <th>Date</th>
+                <th>Open Stock</th>
+                <th>Material Issued</th>
+                <th>Material Received</th>
+                <th>Closing Stock</th>
+                <th>Prefix</th>
+                <th>Type</th>
+                <th>PDT</th>
+                <th>BFP</th>
+                <th>Price</th>
+            </tr>
+            {% for material in results %}
+            <tr>
+                <td>{{ material.material_code }}</td>
+                <td>{{ material.material_description }}</td>
+                <td>{{ material.unit }}</td>
+                <td>{{ material.date }}</td>
+                <td>{{ material.open_stock }}</td>
+                <td>{{ material.material_issued }}</td>
+                <td>{{ material.material_received }}</td>
+                <td>{{ material.closing_stock }}</td>
+                <td>{{ material.prefix }}</td>
+                <td>{{ material.type }}</td>
+                <td>{{ material.pdt }}</td>
+                <td>{{ material.bfp }}</td>
+                <td>{{ material.price }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    <a href="{% url 'forecast_material' %}">Go to Forecasting</a>
+</body>
+</html>

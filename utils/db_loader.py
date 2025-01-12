@@ -14,20 +14,20 @@ def create_db_from_csv(csv_file, db_name, table_name):
         reader = csv.reader(file)
         headers = next(reader)  # Extract headers
         columns = ', '.join([f'"{header}" TEXT' for header in headers])  # Define columns as TEXT
-        
-        # Create table
-        cursor.execute(f'CREATE TABLE IF NOT EXISTS {table_name} ({columns})')
-        
+
+        # Create table with a primary key
+        cursor.execute(f'CREATE TABLE IF NOT EXISTS {table_name} (id INTEGER PRIMARY KEY AUTOINCREMENT, {columns})')
+
         # Insert rows from CSV into the table with tqdm for progress
         rows = list(reader)  # Convert reader to a list for tqdm
         for row in tqdm(rows, desc="Inserting rows", unit="row"):
-            placeholders = ', '.join(['?'] * len(row))
-            cursor.execute(f'INSERT INTO {table_name} VALUES ({placeholders})', row)
+            placeholders = ', '.join(['?'] * len(row))  # Exclude placeholder for the primary key
+            column_names = ', '.join([f'"{header}"' for header in headers])  # Properly quote column names
+            cursor.execute(f'INSERT INTO {table_name} ({column_names}) VALUES ({placeholders})', row)
 
     # Commit changes and close connection
     conn.commit()
     conn.close()
-
 
 # Main function
 def main():
