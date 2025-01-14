@@ -6,37 +6,104 @@
     <title>Talk with Data</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
         }
+
+        h1 {
+            color: #4a90e2;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
         .chat-box {
-            width: 100%;
             max-width: 600px;
             margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         .chat-message {
             padding: 10px;
             margin: 5px 0;
             border-radius: 5px;
         }
+
         .user-message {
             background-color: #e0f7fa;
             text-align: right;
+            color: #00796b;
         }
+
         .bot-message {
             background-color: #e8eaf6;
             text-align: left;
+            color: #3f51b5;
         }
+
+        .chat-form {
+            margin-top: 20px;
+        }
+
         .chat-form input[type="text"] {
-            width: 80%;
+            width: calc(100% - 100px);
             padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 1rem;
         }
+
         .chat-form button {
-            padding: 10px 15px;
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        .chat-form button:hover {
+            background-color: #357abd;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .chat-form input[type="text"] {
+                width: calc(100% - 90px);
+                font-size: 0.9rem;
+            }
+
+            .chat-form button {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
+{% extends "base.html" %}
+
+{% block title %}Talk with Data{% endblock %}
+
+{% block content %}
     <div class="chat-box">
         <h1>Talk with Data</h1>
 
@@ -57,5 +124,6 @@
             <button type="submit">Send</button>
         </form>
     </div>
+{% endblock %}
 </body>
 </html>

@@ -4,46 +4,175 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forecast Material</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+    
+        h1 {
+            color: #4a90e2;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    
+        form {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    
+        form label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+    
+        form input[type="text"],
+        form input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    
+        form div {
+            margin-bottom: 10px;
+        }
+    
+        form button {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4a90e2;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+    
+        form button:hover {
+            background-color: #357abd;
+        }
+    
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 30px;
+            background: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    
+        table th,
+        table td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+    
+        table th {
+            background-color: #4a90e2;
+            color: #ffffff;
+            font-weight: bold;
+        }
+    
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+    
+        .forecast-plot {
+            text-align: center;
+            margin-top: 30px;
+        }
+    
+        .forecast-plot img {
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    
 </head>
 <body>
+{% extends "base.html" %}
+
+{% block title %}Forecast Material{% endblock %}
+
+{% block content %}
     <h1>Forecast Material</h1>
-    <button onclick="history.back()">Back</button>
-    <!-- Form for Material Code and Forecast Horizon -->
+
+    <!-- Form for Material Code, Horizon, and Model Selection -->
     <form method="post">
         {% csrf_token %}
         <label for="material_code">Material Code:</label>
-        <input type="text" name="material_code" id="material_code" required>
+        <input type="text" name="material_code" id="material_code" required value="{{ material_code }}">
+
         <label for="horizon">Forecasting Horizon (in days):</label>
-        <input type="number" name="horizon" id="horizon" min="1" required>
+        <input type="number" name="horizon" id="horizon" min="1" required value="{{ horizon }}">
+
+        <label>Select Model:</label>
+        <div>
+            <input type="radio" id="timegpt" name="model" value="TimeGPT" {% if model == 'TimeGPT' %}checked{% endif %}>
+            <label for="timegpt">TimeGPT</label>
+        </div>
+        <div>
+            <input type="radio" id="prophet" name="model" value="Prophet" {% if model == 'Prophet' %}checked{% endif %}>
+            <label for="prophet">Prophet</label>
+        </div>
+
         <button type="submit">Forecast</button>
     </form>
 
-    <!-- Display Forecast Results -->
+    <!-- Forecast Results -->
     {% if forecast_data %}
-    <h2>Forecast Results for Material Code: {{ material_code }}</h2>
-        <table border="1">
-            <tr>
-                <th>Date (ds)</th>
-                <th>Forecasted Value (TimeGPT)</th>
-                <th>High Estimate (80%)</th>
-                <th>High Estimate (90%)</th>
-                <th>Low Estimate (80%)</th>
-                <th>Low Estimate (90%)</th>
-            </tr>
-            {% for row in forecast_data %}
-            <tr>
-                <td>{{ row.ds|cut:", midnight" }}</td>
-                <td>{{ row.TimeGPT }}</td>
-                <td>{{ row.timegpt_hi_80 }}</td>
-                <td>{{ row.timegpt_hi_90 }}</td>
-                <td>{{ row.timegpt_lo_80 }}</td>
-                <td>{{ row.timegpt_lo_90 }}</td>
-            </tr>
-            {% endfor %}
+        <h2>Forecast Results for Material Code: {{ material_code }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Forecast</th>
+                    <th>High Estimate (80%)</th>
+                    <th>High Estimate (90%)</th>
+                    <th>Low Estimate (80%)</th>
+                    <th>Low Estimate (90%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in forecast_data %}
+                <tr>
+                    <td>{{ row.ds | cut:", midnight" }}</td>
+                    <td>{{ row.Forecast }}</td>
+                    <td>{{ row.hi_80 }}</td>
+                    <td>{{ row.hi_90 }}</td>
+                    <td>{{ row.lo_80 }}</td>
+                    <td>{{ row.lo_90 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
 
-        <h2>Forecast Plot:</h2>
-        <img src="data:image/png;base64,{{ forecast_plot }}" alt="Forecast Plot">
+        <!-- Forecast Plot -->
+        <div class="forecast-plot">
+            <h2>Forecast Plot:</h2>
+            <img src="data:image/png;base64,{{ forecast_plot }}" alt="Forecast Plot" style="max-width:100%;">
+        </div>
     {% endif %}
+    {% endblock %}
 </body>
 </html>
